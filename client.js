@@ -30,8 +30,10 @@ class Client {
         }
     }
 
-    url_creator(url_final = isRequired("ururl_finall")) {
-        return this.url_base + url_final
+    url_creator(url_final = isRequired("url"), params={}) {
+        let url = new URL(this.url_base + url_final);
+        url.search = new URLSearchParams(params);
+        return url.toString();
     }
 
     signature_creator(message = isRequired("message")) {
@@ -51,16 +53,12 @@ class Client {
     async requests_and_parse(
             http_method = isRequired("http_method"), 
             url = isRequired("url"), 
-            query
         ) {
             let options = {
                 method: http_method,
                 headers: this.header_creator(url),
-                body: JSON.stringify(query)  
             };
-            console.log(options)
-
-            return await (await fetch( url = url, options)).json();
+            return await (await fetch(url=url, options)).json();
         }
 }
 
