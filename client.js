@@ -30,12 +30,12 @@ class Client {
         }
     }
 
-    url_creator(url_final) {
+    url_creator(url_final = isRequired("ururl_finall")) {
         return this.url_base + url_final
     }
 
-    signature_creator (message) {
-        return CryptoJS.HmacSHA256(message, this.API_SECRET).toString(CryptoJS.enc.Sha256);
+    signature_creator(message = isRequired("message")) {
+        return CryptoJS.HmacSHA512(message, this.API_SECRET).toString(CryptoJS.enc.Sha512);
     }
 
     header_creator(url = isRequired("url")) {
@@ -58,6 +58,8 @@ class Client {
                 headers: this.header_creator(url),
                 body: JSON.stringify(query)  
             };
+            console.log(options)
+
             return await (await fetch( url = url, options)).json();
         }
 }
